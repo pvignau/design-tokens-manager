@@ -1,0 +1,26 @@
+{
+  "name": "design-tokens-manager",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=packages/app",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "preview": "npm run preview --workspace=packages/app",
+    "dev:app": "npm run dev --workspace=packages/app",
+    "dev:figma": "npm run dev --workspace=packages/figma-plugin",
+    "build:app": "npm run build --workspace=packages/app",
+    "build:figma": "npm run build --workspace=packages/figma-plugin",
+    "build:shared": "npm run build --workspace=packages/shared"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

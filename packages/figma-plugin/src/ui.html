@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Design Tokens Manager</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 100%;
+    }
+    .header {
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: #666;
+      margin: 0;
+    }
+    .status {
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+    .status.connected {
+      background: #e8f5e8;
+      color: #2d5a2d;
+      border: 1px solid #c3e6c3;
+    }
+    .status.disconnected {
+      background: #ffeaea;
+      color: #5a2d2d;
+      border: 1px solid #e6c3c3;
+    }
+    .token-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .token-item {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+    .token-name {
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .token-type {
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .token-value {
+      font-size: 12px;
+      color: #333;
+      margin-top: 4px;
+    }
+    .color-preview {
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-right: 8px;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+    }
+    .sync-button {
+      width: 100%;
+      padding: 8px 16px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+    .sync-button:hover {
+      background: #0052a3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">Design Tokens Manager</h1>
+      <p class="subtitle">Sync Variables + Text Styles with your app</p>
+    </div>
+    
+    <div id="status" class="status disconnected">
+      Connecting to server...
+    </div>
+    
+    <div id="connection-info" style="font-size: 11px; color: #666; margin-bottom: 12px; display: none;">
+      <div id="connection-method"></div>
+      <div id="client-count"></div>
+      <div id="last-update"></div>
+    </div>
+    
+    <button id="syncButton" class="sync-button">
+      Sync Tokens
+    </button>
+    
+    <div class="token-list" id="tokenList">
+      <div class="token-item">
+        <div class="token-name">No tokens yet</div>
+        <div class="token-type">Click sync to load tokens</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isConnected = false;
+    let tokens = [];
+
+    function updateStatus(connected, method = '', error = '') {
+      isConnected = connected;
+      const statusEl = document.getElementById('status');
+      const infoEl = document.getElementById('connection-info');
+      const methodEl = document.getElementById('connection-method');
+      
+      if (connected) {
+        statusEl.textContent = `Connected to app${method ? ` (${method})` : ''}`;
+        statusEl.className = 'status connected';
+        
+        if (method) {
+          methodEl.textContent = `Method: ${method} + HTTP`;
+          infoEl.style.display = 'block';
+        }
+      } else {
+        statusEl.textContent = error ? `Error: ${error}` : 'Disconnected from app';
+        statusEl.className = 'status disconnected';
+        infoEl.style.display = 'none';
+      }
+    }
+
+    function updateConnectionInfo(clients, timestamp) {
+      const clientCountEl = document.getElementById('client-count');
+      const lastUpdateEl = document.getElementById('last-update');
+      
+      if (clients !== undefined) {
+        clientCountEl.textContent = `Connected clients: ${clients}`;
+      }
+      
+      if (timestamp) {
+        const time = new Date(timestamp).toLocaleTimeString();
+        lastUpdateEl.textContent = `Last update: ${time}`;
+      }
+    }
+
+    function renderTokens(tokenList) {
+      const tokenListEl = document.getElementById('tokenList');
+      
+      if (!tokenList || tokenList.length === 0) {
+        tokenListEl.innerHTML = `
+          <div class="token-item">
+            <div class="token-name">No tokens found</div>
+            <div class="token-type">Extract some styles from your Figma file</div>
+          </div>
+        `;
+        return;
+      }
+
+      tokenListEl.innerHTML = tokenList.map(token => {
+        let valueDisplay = '';
+        if (token.type === 'color') {
+          valueDisplay = `<span class="color-preview" style="background-color: ${token.value}"></span>${token.value}`;
+        } else if (token.type === 'typography') {
+          valueDisplay = `${token.value.fontSize}px ${token.value.fontFamily}`;
+        } else {
+          valueDisplay = JSON.stringify(token.value);
+        }
+
+        return `
+          <div class="token-item">
+            <div class="token-name">${token.name}</div>
+            <div class="token-type">${token.type}</div>
+            <div class="token-value">${valueDisplay}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('syncButton').addEventListener('click', () => {
+      parent.postMessage({ 
+        pluginMessage: { type: 'SYNC_TOKENS' } 
+      }, '*');
+    });
+
+    window.onmessage = (event) => {
+      const message = event.data.pluginMessage;
+      
+      switch (message.type) {
+        case 'TOKENS_SYNCED':
+          tokens = message.tokens;
+          renderTokens(tokens);
+          
+          if (message.source === 'local') {
+            // Local sync from this Figma instance
+            console.log('📤 Local tokens synced:', tokens.length);
+          } else {
+            // Remote sync from another source
+            console.log('📥 Remote tokens received:', tokens.length);
+          }
+          break;
+          
+        case 'TOKEN_UPDATED':
+          const index = tokens.findIndex(t => t.id === message.token.id);
+          if (index !== -1) {
+            tokens[index] = message.token;
+          } else {
+            tokens.push(message.token);
+          }
+          renderTokens(tokens);
+          break;
+          
+        case 'CONNECTION_STATUS':
+          updateStatus(message.connected, message.method, message.error);
+          break;
+          
+        case 'SYNC_STATUS':
+          if (message.success) {
+            updateConnectionInfo(message.clients);
+            console.log('✅ Sync successful:', message.message);
+          }
+          break;
+          
+        case 'REAL_TIME_UPDATE':
+          console.log('🔄 Real-time update received:', message.data);
+          
+          if (message.data.type === 'sync' && message.data.source !== 'figma') {
+            // Update from external source (web app, API, etc.)
+            tokens = message.data.tokens || [];
+            renderTokens(tokens);
+            
+            // Add visual indicator for external updates
+            const statusEl = document.getElementById('status');
+            const originalText = statusEl.textContent;
+            statusEl.textContent = '🔄 Tokens updated from external source';
+            setTimeout(() => {
+              statusEl.textContent = originalText;
+            }, 3000);
+          }
+          
+          updateConnectionInfo(undefined, message.timestamp);
+          break;
+      }
+    };
+
+    updateStatus(false);
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "@design-tokens-manager/figma-plugin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@design-tokens-manager/shared": "*",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.104.0",
+    "@types/ws": "^8.5.13",
+    "css-loader": "^7.1.2",
+    "eslint": "^9.33.0",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "~5.8.3",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  }
+}

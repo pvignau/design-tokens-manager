@@ -1,0 +1,15 @@
+{
+  "name": "Design Tokens Manager",
+  "id": "design-tokens-manager",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["http://localhost:5173"],
+    "devAllowedDomains": ["http://localhost:5173"],
+    "reasoning": "Realtime sync with our backend"
+  }
+}

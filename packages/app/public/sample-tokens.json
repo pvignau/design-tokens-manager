@@ -1,0 +1,204 @@
+{
+  "color": {
+    "brand": {
+      "primary": {
+        "$type": "color",
+        "$value": "#0066CC",
+        "$description": "Primary brand color used for buttons, links, and key UI elements"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#6366F1",
+        "$description": "Secondary brand color for accents and highlights"
+      }
+    },
+    "neutral": {
+      "white": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$description": "Pure white for backgrounds and text"
+      },
+      "black": {
+        "$type": "color",
+        "$value": "#000000",
+        "$description": "Pure black for text and icons"
+      },
+      "gray": {
+        "50": {
+          "$type": "color",
+          "$value": "#F9FAFB",
+          "$description": "Lightest gray for subtle backgrounds"
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#F3F4F6",
+          "$description": "Light gray for card backgrounds"
+        },
+        "500": {
+          "$type": "color",
+          "$value": "#6B7280",
+          "$description": "Medium gray for secondary text"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#111827",
+          "$description": "Dark gray for primary text"
+        }
+      }
+    }
+  },
+  "dimension": {
+    "spacing": {
+      "xs": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "Extra small spacing for tight layouts"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "Small spacing for compact components"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "Medium spacing for standard layouts"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "Large spacing for generous layouts"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Extra large spacing for section breaks"
+      }
+    },
+    "borderRadius": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "Small border radius for buttons and inputs"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "Medium border radius for cards"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "Large border radius for prominent elements"
+      },
+      "full": {
+        "$type": "dimension",
+        "$value": "9999px",
+        "$description": "Full border radius for circular elements"
+      }
+    }
+  },
+  "fontFamily": {
+    "sans": {
+      "$type": "fontFamily",
+      "$value": ["Inter", "system-ui", "-apple-system", "sans-serif"],
+      "$description": "Modern sans-serif font stack for UI text"
+    },
+    "mono": {
+      "$type": "fontFamily",
+      "$value": ["SF Mono", "Monaco", "Consolas", "monospace"],
+      "$description": "Monospace font stack for code and data"
+    }
+  },
+  "fontWeight": {
+    "normal": {
+      "$type": "fontWeight",
+      "$value": "400",
+      "$description": "Normal font weight for body text"
+    },
+    "medium": {
+      "$type": "fontWeight",
+      "$value": "500",
+      "$description": "Medium font weight for emphasis"
+    },
+    "semibold": {
+      "$type": "fontWeight",
+      "$value": "600",
+      "$description": "Semi-bold font weight for headings"
+    },
+    "bold": {
+      "$type": "fontWeight",
+      "$value": "700",
+      "$description": "Bold font weight for strong emphasis"
+    }
+  },
+  "shadow": {
+    "sm": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#00000010",
+        "offsetX": "0px",
+        "offsetY": "1px",
+        "blur": "2px",
+        "spread": "0px"
+      },
+      "$description": "Small shadow for subtle depth"
+    },
+    "md": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#00000015",
+        "offsetX": "0px",
+        "offsetY": "4px",
+        "blur": "6px",
+        "spread": "-1px"
+      },
+      "$description": "Medium shadow for cards and modals"
+    },
+    "lg": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#00000020",
+        "offsetX": "0px",
+        "offsetY": "10px",
+        "blur": "15px",
+        "spread": "-3px"
+      },
+      "$description": "Large shadow for floating elements"
+    }
+  },
+  "duration": {
+    "fast": {
+      "$type": "duration",
+      "$value": "150ms",
+      "$description": "Fast animation duration for micro-interactions"
+    },
+    "normal": {
+      "$type": "duration",
+      "$value": "300ms",
+      "$description": "Normal animation duration for transitions"
+    },
+    "slow": {
+      "$type": "duration",
+      "$value": "500ms",
+      "$description": "Slow animation duration for complex transitions"
+    }
+  },
+  "cubicBezier": {
+    "ease": {
+      "$type": "cubicBezier",
+      "$value": [0.25, 0.1, 0.25, 1],
+      "$description": "Standard easing curve for smooth transitions"
+    },
+    "easeOut": {
+      "$type": "cubicBezier", 
+      "$value": [0, 0, 0.2, 1],
+      "$description": "Ease-out curve for entering elements"
+    },
+    "easeIn": {
+      "$type": "cubicBezier",
+      "$value": [0.4, 0, 1, 1], 
+      "$description": "Ease-in curve for exiting elements"
+    }
+  }
+}
